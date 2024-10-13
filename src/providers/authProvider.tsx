@@ -1,14 +1,13 @@
+import type { LoginRequest, LoginResponse } from '@/types'
 import {
   createContext,
   useState,
   useContext,
-  FC,
-  PropsWithChildren,
+  type PropsWithChildren,
 } from 'react'
-import {apiService} from "@/lib/axios";
-import {LOGIN_URL} from "@/config";
-import {LoginRequest, LoginResponse} from "@/types";
-import {AxiosError} from "axios";
+import { apiService } from '@/lib/axios'
+import { LOGIN_URL } from '@/config'
+import { AxiosError } from 'axios'
 
 const AuthContext = createContext({
   isAuthenticated: false,
@@ -17,20 +16,21 @@ const AuthContext = createContext({
   logout: () => {},
 })
 
-export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'))
   const [error, setError] = useState<string | null>(null)
   const login = async (username: string, password: string) => {
     try {
-      const response = await apiService.post<LoginRequest, LoginResponse>(LOGIN_URL, { username, password });
-      const { token } = response.data;
-      setAuthToken(token);
-      localStorage.setItem('authToken', token);
-      
+      const response = await apiService.post<LoginRequest, LoginResponse>(
+        LOGIN_URL,
+        { username, password },
+      )
+      const { token } = response.data
+      setAuthToken(token)
+      localStorage.setItem('authToken', token)
     } catch (error: unknown) {
-      setError((error as AxiosError<{message: string}>).message);
-    } 
-      
+      setError((error as AxiosError<{ message: string }>).message)
+    }
   }
 
   const logout = () => {

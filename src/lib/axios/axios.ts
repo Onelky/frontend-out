@@ -27,7 +27,10 @@ const getAll = <T>(endpoint: string, params?: object): ApiResponse<T> => {
 }
 
 // Generic POST function
-const post = <TData, TResponse>(endpoint: string, data: TData): ApiResponse<TResponse> => {
+const post = <TData, TResponse>(
+  endpoint: string,
+  data: TData,
+): ApiResponse<TResponse> => {
   return axios.post<TResponse>(endpoint, data)
 }
 

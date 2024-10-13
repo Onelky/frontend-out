@@ -1,3 +1,3 @@
-export const API_URL = process.env.API_URL
-export const NODE_ENV = process.env.NODE_ENV
-export const LOGIN_URL = process.env.LOGIN_URL || ''
+export const API_URL = import.meta.env.API_URL
+export const NODE_ENV = import.meta.env.NODE_ENV
+export const LOGIN_URL = import.meta.env.LOGIN_URL || ''
