@@ -1,9 +1,10 @@
+import type { ErrorResponse, LoginRequest, LoginResponse } from '@/types'
 import { http, HttpResponse } from 'msw'
-import { ErrorResponse, LoginRequest, LoginResponse } from '../types'
+import { LOGIN_URL } from '@/config'
 
 export const handlers = [
   http.post<never, LoginRequest, LoginResponse | ErrorResponse>(
-    '/api/login',
+    `${LOGIN_URL}`,
     async ({ request }) => {
       const requestInfo = await request.json()
 

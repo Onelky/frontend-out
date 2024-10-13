@@ -1,6 +1,6 @@
 import '@mantine/core/styles.css'
-import { MantineProvider } from '@mantine/core'
+import { Providers } from '@/app/Providers'
 
 export default function App() {
-  return <MantineProvider>App</MantineProvider>
+  return <Providers>App</Providers>
 }

@@ -1,6 +1,6 @@
-import {render} from "@testing-library/react";
-import {Login} from "./Login";
+import { render } from '@testing-library/react'
+import { Login } from './Login'
 
 it('should render Login', () => {
-    render(<Login/>)
-}); 
+  render(<Login />)
+})

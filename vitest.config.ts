@@ -3,17 +3,15 @@ import react from '@vitejs/plugin-react'
 import path from 'node:path'
 
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
       '@tests': path.resolve(__dirname, './src/tests/'),
       '@hooks': path.resolve(__dirname, './src/hooks/'),
-      '@testUtils': path.resolve(__dirname, './src/testUtils')
-    }
+      '@testUtils': path.resolve(__dirname, './src/testUtils'),
+    },
   },
   test: {
     environment: 'jsdom',
@@ -27,9 +25,9 @@ export default defineConfig({
       include: [
         'src/components/**/*.{ts,tsx}',
         'src/features/**/*.{ts,tsx}',
-        'src/hooks/**/*.{ts,tsx}'
+        'src/hooks/**/*.{ts,tsx}',
       ],
-      exclude: ['node_modules/', 'dist/', 'index.ts'] // Exclude unnecessary folders
-    }
-  }
+      exclude: ['node_modules/', 'dist/', 'index.ts'], // Exclude unnecessary folders
+    },
+  },
 })
