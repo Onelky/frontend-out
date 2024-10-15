@@ -1,7 +1,4 @@
-import Axios, {
-  type AxiosResponse,
-  type InternalAxiosRequestConfig,
-} from 'axios'
+import Axios, { type InternalAxiosRequestConfig } from 'axios'
 
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   config.headers.Accept = 'application/json'
@@ -20,10 +17,10 @@ axios.interceptors.response.use(
   },
 )
 
-export type ApiResponse<T> = Promise<AxiosResponse<T>>
+export type ApiResponse<T> = Promise<T>
 
 const getAll = <T>(endpoint: string, params?: object): ApiResponse<T> => {
-  return axios.get<T>(endpoint, { params })
+  return axios.get<unknown, T>(endpoint, { params })
 }
 
 // Generic POST function
@@ -31,7 +28,7 @@ const post = <TData, TResponse>(
   endpoint: string,
   data: TData,
 ): ApiResponse<TResponse> => {
-  return axios.post<TResponse>(endpoint, data)
+  return axios.post<unknown, TResponse>(endpoint, data)
 }
 
 export const apiService = { getAll, post }

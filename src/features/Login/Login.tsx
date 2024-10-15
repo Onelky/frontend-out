@@ -14,14 +14,14 @@ export const Login = () => {
     formState: { isValid },
   } = useForm<LoginForm>({
     resolver: yupResolver(loginSchema),
-    shouldFocusError: true, defaultValues: {email: '', password:''},
+    shouldFocusError: true,
+    defaultValues: { email: '', password: '' },
     mode: 'all',
   })
   const onSubmit = (values: LoginForm) => login(values.email, values.password)
 
   return (
     <div>
-      {error && <Alert>{error}</Alert>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInputController
           control={control}
@@ -38,9 +38,12 @@ export const Login = () => {
           textInputProps={{
             label: 'Password',
             required: true,
+            type: 'password',
             placeholder: 'Password',
           }}
         />
+        {error && <Alert color={'red'}>{error}</Alert>}
+
         <Button type={'submit'} disabled={!isValid}>
           Login
         </Button>
