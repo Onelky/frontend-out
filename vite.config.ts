@@ -12,4 +12,7 @@ export default defineConfig({
       '@hooks': '/src/hooks',
     },
   },
+  server: {
+    port: 3001,
+  },
 })

@@ -1,9 +1,10 @@
 export interface LoginRequest {
-  username: string
+  email: string
   password: string
 }
 
-export interface LoginResponse {
+export interface UserInfo {
+  email: string
   token: string
 }
 

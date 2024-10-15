@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse } from '@/types'
+import type { LoginRequest, UserInfo } from '@/types'
 import {
   createContext,
   useState,
@@ -7,41 +7,50 @@ import {
 } from 'react'
 import { apiService } from '@/lib/axios'
 import { LOGIN_URL } from '@/config'
-import { AxiosError } from 'axios'
+
+const defaultUserInfo = {
+  email: '',
+  token: '',
+}
 
 const AuthContext = createContext({
   isAuthenticated: false,
-  error: null,
-  login: (username: string, password: string) => {},
+  error: '',
+  userInfo: defaultUserInfo,
+  login: (username?: string, password?: string) => {},
   logout: () => {},
 })
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'))
-  const [error, setError] = useState<string | null>(null)
-  const login = async (username: string, password: string) => {
+  const [userInfo, setUserInfo] = useState<UserInfo>(defaultUserInfo)
+  const [error, setError] = useState<string>('')
+
+  const login = async (email = '', password = '') => {
     try {
       const response = await apiService.post<LoginRequest, LoginResponse>(
-        LOGIN_URL,
-        { username, password },
+        `${LOGIN_URL}`,
+        { email, password },
       )
       const { token } = response.data
-      setAuthToken(token)
       localStorage.setItem('authToken', token)
+      setUserInfo({ token, email })
     } catch (error: unknown) {
-      setError((error as AxiosError<{ message: string }>).message)
+      setError('Invalid credentials')
     }
   }
 
   const logout = () => {
-    setAuthToken(null)
+    setUserInfo(defaultUserInfo)
+    setError('')
     localStorage.removeItem('authToken')
   }
 
-  const isAuthenticated = !!authToken
+  const isAuthenticated = !!userInfo
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, error, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, error, userInfo, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   )
