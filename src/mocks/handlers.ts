@@ -1,23 +1,17 @@
-import type { ErrorResponse, LoginRequest, LoginResponse } from '@/types'
+import { ErrorResponse, LoginRequest, UserInfo } from '@/types'
 import { http, HttpResponse } from 'msw'
-import { LOGIN_URL } from '@/config'
+import { EMAIL, LOGIN_URL, PASSWORD } from '@/config'
 
 export const handlers = [
-  http.post<never, LoginRequest, LoginResponse | ErrorResponse>(
+  http.post<never, LoginRequest, UserInfo | ErrorResponse>(
     `${LOGIN_URL}`,
     async ({ request }) => {
-      const requestInfo = await request.json()
+      const { email, password } = await request.json()
+      if (email === EMAIL && password === PASSWORD) {
+        return HttpResponse.json({ email, token: 'token' })
+      }
 
-      if (
-        requestInfo?.username === process.env.USERNAME &&
-        requestInfo?.password === process.env.PASSWORD
-      )
-        return HttpResponse.json({ token: '' })
-
-      return HttpResponse.json(
-        { message: 'Invalid username or password' },
-        { status: 401 },
-      )
+      return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 })
     },
   ),
 ]

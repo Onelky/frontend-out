@@ -1,47 +1,74 @@
-import type { LoginRequest, LoginResponse } from '@/types'
+import type { LoginRequest, UserInfo } from '@/types'
 import {
   createContext,
   useState,
   useContext,
   type PropsWithChildren,
+  useEffect,
 } from 'react'
 import { apiService } from '@/lib/axios'
 import { LOGIN_URL } from '@/config'
-import { AxiosError } from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-const AuthContext = createContext({
+interface AuthContextValues {
+  isAuthenticated: boolean
+  error: string
+  userInfo: UserInfo | null
+  login: (username?: string, password?: string) => void
+  logout: () => void
+}
+
+const AuthContext = createContext<AuthContextValues>({
   isAuthenticated: false,
-  error: null,
-  login: (username: string, password: string) => {},
+  error: '',
+  userInfo: null,
+  login: () => {},
   logout: () => {},
 })
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'))
-  const [error, setError] = useState<string | null>(null)
-  const login = async (username: string, password: string) => {
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+  const [error, setError] = useState<string>('')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken')
+    if (token) {
+      setUserInfo({ token, email: 'test@example.com' })
+    } else {
+      setUserInfo(null)
+    }
+  }, [])
+
+  const login = async (email = '', password = '') => {
     try {
-      const response = await apiService.post<LoginRequest, LoginResponse>(
-        LOGIN_URL,
-        { username, password },
+      const response = await apiService.post<LoginRequest, UserInfo>(
+        `${LOGIN_URL}`,
+        { email, password },
       )
-      const { token } = response.data
-      setAuthToken(token)
+
+      const { token = '' } = response
+
       localStorage.setItem('authToken', token)
+      setUserInfo({ token, email })
+      navigate('/dashboard')
     } catch (error: unknown) {
-      setError((error as AxiosError<{ message: string }>).message)
+      setError('Invalid credentials')
     }
   }
 
   const logout = () => {
-    setAuthToken(null)
+    setUserInfo(null)
+    setError('')
     localStorage.removeItem('authToken')
   }
 
-  const isAuthenticated = !!authToken
+  const isAuthenticated = !!userInfo
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, error, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, error, userInfo, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   )

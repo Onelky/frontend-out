@@ -1,16 +1,19 @@
 import { ReactNode, useEffect } from 'react'
 import { NODE_ENV } from '@/config'
 import { useToggle } from '@mantine/hooks'
+import { StartReturnType } from 'msw/src/browser/setupWorker/glossary.ts'
 
-let mockingPromise: Promise<boolean> | undefined
+let mockingPromise: StartReturnType
 
 /* Starts msw browser worker only if two conditions are met:
  * 1. the execution of the app starts from the browser (i.e. windows object is defined)
  * 2. The environment is development
  */
+
 if (typeof window !== 'undefined' && NODE_ENV === 'development') {
-  const { worker } = require('../mocks/browser')
-  mockingPromise = worker.start()
+  import('../mocks/browser').then(({ worker }) => {
+    mockingPromise = worker.start()
+  })
 }
 
 /*
@@ -26,7 +29,7 @@ export function MSWProvider({
   useEffect(() => {
     if (mockingPromise) mockingPromise.then(() => setLoaded(true))
     else setLoaded(true)
-  }, [])
+  }, [mockingPromise])
 
   if (!loaded) return null
   return children

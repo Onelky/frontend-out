@@ -21,8 +21,15 @@
       "@components/*": ["./src/components/*"],
       "@features/*": ["./src/features/*"],
       "@hooks/*": ["./src/hooks/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "vitest.setup.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
