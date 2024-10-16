@@ -2,9 +2,8 @@ import type { FC, PropsWithChildren, ReactElement } from 'react'
 import { render, type RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MantineProvider } from '@mantine/core'
-import { AuthContext } from '@/providers/authProvider.tsx'
+import { AuthProvider } from '@/providers/authProvider.tsx'
 import { BrowserRouter } from 'react-router-dom'
-import { AppRoutes } from '@/app/AppRoutes'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,20 +27,9 @@ const Render: FC<PropsWithChildren> = ({ children }) => {
   return (
     <BrowserRouter>
       <TestQueryProvider>
-        <AuthContext.Provider
-          value={{
-            isAuthenticated: true,
-            error: '',
-            userInfo: { email: '', token: 'test' },
-            login: () => {},
-            logout: () => {},
-          }}
-        >
-          <MantineProvider>
-            <AppRoutes />
-            {children}
-          </MantineProvider>
-        </AuthContext.Provider>
+        <AuthProvider>
+          <MantineProvider>{children}</MantineProvider>
+        </AuthProvider>
       </TestQueryProvider>
     </BrowserRouter>
   )
