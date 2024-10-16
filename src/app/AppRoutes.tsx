@@ -43,7 +43,7 @@ export const AppRoutes = () => (
     <Route
       path="/dashboard"
       element={
-        <RouteGuardian isProtected={true}>
+        <RouteGuardian isProtected>
           <DashboardPage />
         </RouteGuardian>
       }

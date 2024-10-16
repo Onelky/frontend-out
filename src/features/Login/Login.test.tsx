@@ -7,15 +7,17 @@ it('should enable Login button only when form is valid', async () => {
   const user = userEvent.setup()
   render(<Login />)
 
+  const loginButton = screen.getByRole('button', { name: 'Login' })
+
   // Validate that Login button is disabled by default
-  expect(screen.getByRole('button', { name: 'Login' })).toBeDisabled()
+  expect(loginButton).toBeDisabled()
 
   // Fill form
-  await user.type(screen.getByRole('textbox', { name: 'email' }), 'test')
-  await user.type(screen.getByRole('textbox', { name: 'password' }), 'test')
+  await user.type(screen.getByLabelText(/Email/i), 'test@test.com')
+  await user.type(screen.getByLabelText(/Password/i), 'test123')
 
   // Validate that Login button is enabled
-  expect(screen.getByRole('button', { name: 'Login' })).toBeEnabled()
+  expect(loginButton).toBeEnabled()
 })
 
 it('should display errors when login with invalid credentials', async () => {
@@ -23,16 +25,17 @@ it('should display errors when login with invalid credentials', async () => {
   render(<Login />)
 
   // Fill form
-  await user.type(screen.getByRole('textbox', { name: 'email' }), 'test')
-  await user.type(screen.getByRole('textbox', { name: 'password' }), 'test')
+  await user.type(
+    screen.getByRole('textbox', { name: 'Email' }),
+    'test@test.com',
+  )
+  await user.type(screen.getByLabelText(/Password/i), 'test123')
 
   // Click login button
   await user.click(screen.getByRole('button', { name: 'Login' }))
 
   // Validate that error messages are displayed
   expect(
-    within(await screen.findByRole('alert', { name: 'Errors' })).getByText(
-      'Invalid credentials',
-    ),
+    within(await screen.findByRole('alert')).getByText('Invalid credentials'),
   ).toBeInTheDocument()
 })

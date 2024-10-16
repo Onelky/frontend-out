@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { LoginForm, loginSchema } from './Login.utils'
 import { TextInputController } from '@components/form'
-import { Alert, Button } from '@mantine/core'
+import { Alert, Button, Stack, Title } from '@mantine/core'
 import { useAuth } from '@/providers/authProvider.tsx'
 
 export const Login = () => {
@@ -21,7 +21,8 @@ export const Login = () => {
   const onSubmit = (values: LoginForm) => login(values.email, values.password)
 
   return (
-    <div>
+    <Stack>
+      <Title>ProLogin</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInputController
           control={control}
@@ -48,6 +49,6 @@ export const Login = () => {
           Login
         </Button>
       </form>
-    </div>
+    </Stack>
   )
 }
