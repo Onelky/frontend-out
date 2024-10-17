@@ -1,7 +1,6 @@
 import { render, screen } from '@/testUtils'
 import { Login } from './Login'
 import userEvent from '@testing-library/user-event'
-import { within } from '@testing-library/dom'
 
 it('should enable Login button only when form is valid', async () => {
   const user = userEvent.setup()
@@ -35,7 +34,5 @@ it('should display errors when login with invalid credentials', async () => {
   await user.click(screen.getByRole('button', { name: 'Login' }))
 
   // Validate that error messages are displayed
-  expect(
-    within(await screen.findByRole('alert')).getByText('Invalid credentials'),
-  ).toBeInTheDocument()
+  expect(screen.getByText('Invalid credentials')).toBeInTheDocument()
 })

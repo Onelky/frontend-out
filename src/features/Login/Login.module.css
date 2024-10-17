@@ -1,0 +1,15 @@
+.paper {
+  height: 80vh;
+  width: 80vw;
+  max-width: 500px;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+
+  @media (max-width: $mantine-breakpoint-md) {
+    width: 80vw;
+    padding: 60px 20px;
+  }
+}

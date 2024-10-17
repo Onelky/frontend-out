@@ -1,11 +1,18 @@
 import type { CommonControllerProps } from './form.types'
-import { type ChangeEvent } from 'react'
+import { type ChangeEvent, useMemo, useState } from 'react'
 import { type FieldValues, useController } from 'react-hook-form'
-import { TextInput, type TextInputProps } from '@mantine/core'
+import {
+  ActionIcon,
+  TextInput,
+  type TextInputProps,
+  useMantineTheme,
+} from '@mantine/core'
+import { IconEye, IconEyeClosed, Icon } from '@tabler/icons-react'
 
 interface TextFieldControllerProps<T extends FieldValues>
   extends CommonControllerProps<T> {
   textInputProps?: Omit<TextInputProps, 'value' | 'onChange' | 'name' | 'error'>
+  isPassword?: boolean
 }
 
 /**
@@ -14,7 +21,8 @@ interface TextFieldControllerProps<T extends FieldValues>
 export const TextInputController = <T extends FieldValues>(
   props: TextFieldControllerProps<T>,
 ) => {
-  const { control, name, textInputProps } = props
+  const { control, name, textInputProps, isPassword } = props
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   const {
     field: { value, onBlur, onChange },
@@ -23,6 +31,26 @@ export const TextInputController = <T extends FieldValues>(
     name,
     control,
   })
+
+  const inputProps = useMemo(() => {
+    const Icon: Icon = showPassword ? IconEyeClosed : IconEye
+
+    if (!isPassword) return { ...textInputProps }
+
+    return {
+      ...textInputProps,
+      rightSection: (
+        <ActionIcon
+          variant={'transparent'}
+          color={'gray'}
+          onClick={() => setShowPassword((value) => !value)}
+        >
+          <Icon />
+        </ActionIcon>
+      ),
+      type: showPassword ? 'text' : 'password',
+    }
+  }, [isPassword, showPassword, textInputProps])
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -35,7 +63,7 @@ export const TextInputController = <T extends FieldValues>(
       onBlur={onBlur}
       error={errors[name]?.message as string}
       onChange={handleChange}
-      {...textInputProps}
+      {...inputProps}
     />
   )
 }
