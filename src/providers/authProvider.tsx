@@ -18,7 +18,7 @@ interface AuthContextValues {
   logout: () => void
 }
 
-const AuthContext = createContext<AuthContextValues>({
+export const AuthContext = createContext<AuthContextValues>({
   isAuthenticated: false,
   error: '',
   userInfo: null,
@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setUserInfo(null)
     setError('')
     localStorage.removeItem('authToken')
+    navigate('/')
   }
 
   const isAuthenticated = !!userInfo

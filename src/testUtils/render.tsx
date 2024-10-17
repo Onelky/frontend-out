@@ -2,6 +2,9 @@ import type { FC, PropsWithChildren, ReactElement } from 'react'
 import { render, type RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MantineProvider } from '@mantine/core'
+import { AuthProvider } from '@/providers/authProvider.tsx'
+import { BrowserRouter } from 'react-router-dom'
+import theme from "@/theme";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,9 +26,13 @@ export const TestQueryProvider: FC<PropsWithChildren> = ({ children }) => {
  * */
 const Render: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <TestQueryProvider>
-      <MantineProvider>{children}</MantineProvider>
-    </TestQueryProvider>
+    <BrowserRouter>
+      <TestQueryProvider>
+        <AuthProvider>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
+        </AuthProvider>
+      </TestQueryProvider>
+    </BrowserRouter>
   )
 }
 

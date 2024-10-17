@@ -2,7 +2,7 @@ import { server } from '@/mocks/server'
 import { vi, beforeAll, afterEach, afterAll } from 'vitest'
 import '@testing-library/jest-dom'
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }))
+beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 

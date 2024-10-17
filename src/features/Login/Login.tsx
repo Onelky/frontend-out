@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
-import { LoginForm, loginSchema } from './Login.utils'
+import { type LoginForm, loginSchema } from './Login.utils'
 import { TextInputController } from '@components/form'
-import { Alert, Button } from '@mantine/core'
+import { Button, Paper, Stack, Text, Title } from '@mantine/core'
 import { useAuth } from '@/providers/authProvider.tsx'
+import styles from './Login.module.css'
 
 export const Login = () => {
   const { login, error } = useAuth()
@@ -21,8 +22,16 @@ export const Login = () => {
   const onSubmit = (values: LoginForm) => login(values.email, values.password)
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Paper withBorder radius={'sm'} shadow={'md'} className={styles.paper}>
+      <Title order={1} c={'primary.8'}>
+        ProLogin
+      </Title>
+      <Stack
+        w={'100%'}
+        h={'100%'}
+        component={'form'}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <TextInputController
           control={control}
           name={'email'}
@@ -35,6 +44,7 @@ export const Login = () => {
         <TextInputController
           control={control}
           name={'password'}
+          isPassword
           textInputProps={{
             label: 'Password',
             required: true,
@@ -42,12 +52,16 @@ export const Login = () => {
             placeholder: 'Password',
           }}
         />
-        {error && <Alert color={'red'}>{error}</Alert>}
+        {error && (
+          <Text variant={'outline'} c={'red'}>
+            {error}
+          </Text>
+        )}
 
         <Button type={'submit'} disabled={!isValid}>
           Login
         </Button>
-      </form>
-    </div>
+      </Stack>
+    </Paper>
   )
 }
