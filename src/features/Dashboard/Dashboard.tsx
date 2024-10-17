@@ -13,9 +13,10 @@ import { Comment } from './Dashboard.types.ts'
 import { IconEye } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import DetailDialog from './DetailDialog'
+import DetailDialog from './components/DetailDialog'
 import { useComments } from './api/getComments.ts'
 import style from './Dashboard.module.css'
+import DashboardItem from './components/DashboardItem'
 
 export const Dashboard = () => {
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
@@ -46,16 +47,23 @@ export const Dashboard = () => {
         <List.Item
           ref={index === page.length - 3 ? ref : undefined}
           key={comment.id}
+          classNames={{
+            itemWrapper: style.itemCard,
+            itemIcon: style.itemIcon,
+            itemLabel: style.itemLabel,
+          }}
+          icon={
+            <Tooltip label={'View detail'}>
+              <ActionIcon
+                variant={'transparent'}
+                onClick={() => handleItemClick(comment)}
+              >
+                <IconEye aria-label={'View detail'} />
+              </ActionIcon>
+            </Tooltip>
+          }
         >
-          {comment.id} | {comment.name} | {comment.email}
-          <Tooltip label={'View detail'}>
-            <ActionIcon
-              variant={'transparent'}
-              onClick={() => handleItemClick(comment)}
-            >
-              <IconEye aria-label={'View detail'} />
-            </ActionIcon>
-          </Tooltip>
+          <DashboardItem comment={comment} onClick={handleItemClick} />
         </List.Item>
       )),
     )
@@ -74,8 +82,8 @@ export const Dashboard = () => {
           item={selectedComment}
         />
       )}
-      <Stack align={'center'}>
-        <Group justify={'space-between'}>
+      <Stack w={'100%'} px={'60px'} align={'center'}>
+        <Group w={'100%'} justify={'space-between'}>
           <Title>ProDashboard</Title>
           <Button color={'red'} onClick={logout} variant={'outline'}>
             Logout

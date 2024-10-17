@@ -1,4 +1,4 @@
-import { createTheme, TextInput } from '@mantine/core'
+import { createTheme, TextInput, Title } from '@mantine/core'
 
 export const customColors = {
   secondary: '#cce2d7',
@@ -36,6 +36,7 @@ const theme = createTheme({
   },
   primaryColor: 'primary',
   components: {
+    Title: Title.extend({ defaultProps: { c: 'primary.8' } }),
     TextInput: TextInput.extend({
       defaultProps: {
         color: 'primary',

@@ -1,7 +1,7 @@
-import type { Comment } from './Dashboard.types.ts'
+import type { Comment } from '../Dashboard.types.ts'
 import { Button, Modal, Stack, Text } from '@mantine/core'
 import { capitalize } from '@/utils'
-import classes from './Dashboard.module.css'
+import classes from '../Dashboard.module.css'
 
 const fields: (keyof Comment)[] = ['id', 'name', 'email', 'body']
 
@@ -19,10 +19,10 @@ const DetailDialog = ({ opened, onClose, item }: DetailDialogProps) => {
       onClose={onClose}
     >
       <Modal.Body className={classes.dialog}>
-        <Button onClick={onClose}>Close</Button>
+        <Button color={'red'} onClick={onClose}>Close</Button>
         <Stack gap={10}>
           {fields.map((field) => (
-            <Text key={field}>
+            <Text key={field as string}>
               <b>{capitalize(field)}: </b>
               {item[field]}
             </Text>

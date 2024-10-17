@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MantineProvider } from '@mantine/core'
 import { AuthProvider } from '@/providers/authProvider.tsx'
 import { BrowserRouter } from 'react-router-dom'
+import theme from "@/theme";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +29,7 @@ const Render: FC<PropsWithChildren> = ({ children }) => {
     <BrowserRouter>
       <TestQueryProvider>
         <AuthProvider>
-          <MantineProvider>{children}</MantineProvider>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
         </AuthProvider>
       </TestQueryProvider>
     </BrowserRouter>

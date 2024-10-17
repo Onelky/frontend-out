@@ -25,7 +25,7 @@ const RouteGuardian = ({ children, redirectTo, isProtected }: RouteProps) => {
   const { isAuthenticated } = useAuth()
 
   if (isProtected)
-    return isAuthenticated ? children : <Navigate to="/unauthorized" />
+    return isAuthenticated ? children : <Navigate to="/" />
   return isAuthenticated && redirectTo ? <Navigate to={redirectTo} /> : children
 }
 

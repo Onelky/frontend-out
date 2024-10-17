@@ -28,7 +28,7 @@ vi.mock('./api/getComments', () => ({
               {
                 id: 2,
                 name: 'Name 2',
-                email: 'email1@test.com',
+                email: 'email2@test.com',
                 body: 'Body 2',
                 postId: 2,
               },
@@ -39,36 +39,39 @@ vi.mock('./api/getComments', () => ({
     }),
 }))
 
-it('contains the right content: Dashboard header, logout button and multiple rows', async () => {
-  render(<Dashboard />)
+describe('Dashboard', () => {
+  it('should contain the right content: Dashboard header, logout button and multiple rows', async () => {
+    render(<Dashboard />)
 
-  expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument()
-  expect(
-    screen.getByRole('heading', { name: 'ProDashboard' }),
-  ).toBeInTheDocument()
-  expect(screen.getByRole('list')).toBeInTheDocument()
-  expect(screen.getAllByRole('listitem')).toHaveLength(2)
-})
+    expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument()
+    expect(
+        screen.getByRole('heading', { name: 'ProDashboard' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('list')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+  })
 
-it('opens a dialog when the first item of list is selected and closes it when Close button is clicked', async () => {
-  const user = userEvent.setup()
-  render(<Dashboard />)
+  it('should open a dialog when the first item of list is selected and closes it when Close button is clicked', async () => {
+    const user = userEvent.setup()
+    render(<Dashboard />)
 
-  // Click View Detail button inside first row
-  const firstItem = screen.getAllByRole('listitem')[0]
-  await user.click(
-    within(firstItem).getByRole('button', { name: 'View detail' }),
-  )
-  const dialog = await screen.findByRole('dialog')
+    // Click View Detail button inside first row
+    const firstItem = screen.getAllByRole('listitem')[0]
+    await user.click(
+        within(firstItem).getByRole('button', { name: 'View detail' }),
+    )
+    const dialog = await screen.findByRole('dialog')
 
-  // Check that content is correct
-  expect(dialog).toBeInTheDocument()
-  expect(screen.getByText('Body 1')).toBeInTheDocument()
-  expect(screen.getByText('email1@test.com')).toBeInTheDocument()
-  expect(screen.getByText('Name 1')).toBeInTheDocument()
-  expect(screen.getByText('1')).toBeInTheDocument()
+    // Check that content is correct
+    expect(dialog).toBeInTheDocument()
+    expect(within(dialog).getByText('Body 1')).toBeInTheDocument()
+    expect(within(dialog).getByText('email1@test.com')).toBeInTheDocument()
+    expect(within(dialog).getByText('Name 1')).toBeInTheDocument()
+    expect(within(dialog).getByText('1')).toBeInTheDocument()
 
-  // Check that Dialog is closed after clicking button
-  await user.click(screen.getByRole('button', { name: 'Close' }))
-  expect(dialog).not.toBeInTheDocument()
-})
+    // Check that Dialog is closed after clicking button
+    await user.click(screen.getByRole('button', { name: 'Close' }))
+    expect(dialog).not.toBeInTheDocument()
+  })
+
+});

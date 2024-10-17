@@ -1,12 +1,7 @@
 import type { CommonControllerProps } from './form.types'
 import { type ChangeEvent, useMemo, useState } from 'react'
 import { type FieldValues, useController } from 'react-hook-form'
-import {
-  ActionIcon,
-  TextInput,
-  type TextInputProps,
-  useMantineTheme,
-} from '@mantine/core'
+import { ActionIcon, TextInput, type TextInputProps } from '@mantine/core'
 import { IconEye, IconEyeClosed, Icon } from '@tabler/icons-react'
 
 interface TextFieldControllerProps<T extends FieldValues>

@@ -24,12 +24,7 @@
     },
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "vitest.setup.ts"
-  ],
+  "include": ["src/**/*.ts", "vitest.setup.ts", "vite.config.ts"],
+  "exclude": ["vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
