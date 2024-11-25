@@ -1,6 +1,4 @@
-# Frontend Outbuild
-
-Frontend web app for Outbuild test.
+# Frontend Clean
 
 ## Tech Stack
 
